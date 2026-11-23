@@ -1,4 +1,8 @@
+<p align="center"><a href="https://ant0.link"><img src=".github/assets/banner.png" alt="Ant0 MCP server" width="100%"></a></p>
+
 # Ant0 MCP
+
+[![Licence: BSD-3-Clause](https://img.shields.io/badge/licence-BSD--3--Clause-49d158?style=flat-square&labelColor=0c0f0d)](LICENSE) [![Release](https://img.shields.io/github/v/release/Ant0-Browser/ant0-mcp?include_prereleases&style=flat-square&color=49d158&labelColor=0c0f0d)](https://github.com/Ant0-Browser/ant0-mcp/releases)
 
 **Ant0 is a browser for automation and agents.** Each profile has its own saved identity, proxy, cookies and storage. This MCP server lets an AI agent pick or create a profile, run it, and work in its tabs.
 
