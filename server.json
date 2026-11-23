@@ -1,0 +1,21 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "link.ant0/ant0",
+  "title": "Ant0",
+  "description": "Ant0, a browser for automation and agents: profiles, proxies and page control.",
+  "websiteUrl": "https://ant0.link",
+  "repository": {
+    "url": "https://github.com/Ant0-Browser/ant0-mcp",
+    "source": "github"
+  },
+  "version": "0.3.22-beta.2",
+  "packages": [
+    {
+      "registryType": "mcpb",
+      "identifier": "https://github.com/Ant0-Browser/ant0-mcp/releases/download/v0.3.22-beta.2/ant0-0.3.22-beta.2.mcpb",
+      "version": "0.3.22-beta.2",
+      "fileSha256": "583760d0ccd9f3c5d30140900c303bf966f0a551df732656610e047a9079760e",
+      "transport": { "type": "stdio" }
+    }
+  ]
+}

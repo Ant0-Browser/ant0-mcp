@@ -1,0 +1,7220 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "ant0d (adapter subset)",
+    "version": "0.1.0",
+    "description": "Subset of the Ant0 desktop local API used by this adapter."
+  },
+  "components": {
+    "securitySchemes": {
+      "bearer": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
+    "schemas": {
+      "ApiError": {
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "error",
+          "message"
+        ],
+        "properties": {
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "details": {}
+        }
+      },
+      "Session": {
+        "title": "Ant0 session v1",
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "profile_id",
+          "pid",
+          "ws_endpoint",
+          "debug_port",
+          "cdp_http",
+          "browser_version",
+          "user_agent",
+          "headless",
+          "started_at"
+        ],
+        "properties": {
+          "profile_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "pid": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "ws_endpoint": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^wss?://"
+          },
+          "debug_port": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 65535
+          },
+          "cdp_http": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https?://"
+          },
+          "browser_version": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64
+          },
+          "user_agent": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "minLength": 1,
+            "maxLength": 1024
+          },
+          "headless": {
+            "type": "boolean"
+          },
+          "started_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Proxy": {
+        "title": "Ant0 proxy v1",
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "schema",
+          "id",
+          "name",
+          "type",
+          "host",
+          "port",
+          "username",
+          "password_ref",
+          "change_ip_url",
+          "session_pattern",
+          "provider",
+          "udp",
+          "tags",
+          "notes",
+          "created_at",
+          "updated_at",
+          "last_check"
+        ],
+        "properties": {
+          "schema": {
+            "enum": [
+              "ant0-proxy/v1"
+            ]
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "type": {
+            "enum": [
+              "http",
+              "https",
+              "socks5",
+              "socks4"
+            ]
+          },
+          "host": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 253,
+            "pattern": "^[^\\s/\\\\@?#\\[\\]]+$"
+          },
+          "port": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 65535
+          },
+          "username": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "password_ref": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "pattern": "^secret:[0-9a-f-]{36}$"
+          },
+          "change_ip_url": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "uri"
+          },
+          "session_pattern": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "provider": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "minLength": 1,
+            "maxLength": 80
+          },
+          "udp": {
+            "type": "boolean"
+          },
+          "tags": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 40
+            }
+          },
+          "notes": {
+            "type": "string",
+            "maxLength": 4000
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "last_check": {
+            "$ref": "#/components/schemas/ProxyCheck"
+          }
+        }
+      },
+      "ProxyCheck": {
+        "type": [
+          "null",
+          "object"
+        ],
+        "additionalProperties": false,
+        "required": [
+          "at",
+          "ok",
+          "ip",
+          "country",
+          "timezone",
+          "latency_ms",
+          "error"
+        ],
+        "properties": {
+          "at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "ok": {
+            "type": "boolean"
+          },
+          "ip": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "minLength": 1,
+            "maxLength": 64
+          },
+          "country": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "minLength": 1,
+            "maxLength": 64
+          },
+          "timezone": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "minLength": 1,
+            "maxLength": 64
+          },
+          "latency_ms": {
+            "type": [
+              "null",
+              "integer"
+            ],
+            "minimum": 0
+          },
+          "error": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "minLength": 1,
+            "maxLength": 2000
+          },
+          "udp": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "ok",
+              "mapped_ip",
+              "same_ip",
+              "reason",
+              "dns_ok"
+            ],
+            "properties": {
+              "ok": {
+                "type": "boolean"
+              },
+              "mapped_ip": {
+                "type": [
+                  "null",
+                  "string"
+                ],
+                "minLength": 1,
+                "maxLength": 64
+              },
+              "same_ip": {
+                "type": [
+                  "null",
+                  "boolean"
+                ]
+              },
+              "dns_ok": {
+                "type": "boolean"
+              },
+              "reason": {
+                "type": [
+                  "null",
+                  "string"
+                ],
+                "minLength": 1,
+                "maxLength": 32
+              }
+            }
+          }
+        }
+      },
+      "LicenceState": {
+        "title": "Ant0 licence state v1",
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "state",
+          "mode",
+          "plan",
+          "limits",
+          "used",
+          "used_local",
+          "features",
+          "billing",
+          "expires_at",
+          "grace_until",
+          "device_id",
+          "sign_pub",
+          "workspace",
+          "online",
+          "last_refresh_at",
+          "last_error",
+          "keep",
+          "message"
+        ],
+        "properties": {
+          "state": {
+            "enum": [
+              "signed_out",
+              "active",
+              "grace",
+              "locked",
+              "suspended"
+            ]
+          },
+          "mode": {
+            "enum": [
+              "enforce",
+              "off"
+            ]
+          },
+          "plan": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "limits": {
+            "type": [
+              "null",
+              "object"
+            ],
+            "additionalProperties": false,
+            "required": [
+              "profiles",
+              "seats"
+            ],
+            "properties": {
+              "profiles": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "seats": {
+                "type": "integer",
+                "minimum": 0
+              }
+            }
+          },
+          "used": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "used_local": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "features": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "billing": {
+            "enum": [
+              "active",
+              "past_due",
+              "lapsed",
+              null
+            ]
+          },
+          "expires_at": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date-time"
+          },
+          "grace_until": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date-time"
+          },
+          "device_id": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "pattern": "^[A-Z2-7]{26}$"
+          },
+          "sign_pub": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "pattern": "^[A-Za-z0-9+/]{43}=$"
+          },
+          "account_id": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "uuid"
+          },
+          "workspace": {
+            "type": [
+              "null",
+              "object"
+            ],
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "name"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "name": {
+                "type": [
+                  "null",
+                  "string"
+                ]
+              }
+            }
+          },
+          "online": {
+            "type": "boolean"
+          },
+          "checked": {
+            "type": "boolean"
+          },
+          "capabilities": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "last_refresh_at": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "date-time"
+          },
+          "last_error": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "keep": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "profile_ids",
+              "explicit"
+            ],
+            "properties": {
+              "profile_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "explicit": {
+                "type": "boolean"
+              }
+            }
+          },
+          "message": {
+            "type": [
+              "null",
+              "string"
+            ]
+          }
+        }
+      },
+      "ProxyCreate": {
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "type",
+          "host",
+          "port"
+        ],
+        "properties": {
+          "name": {
+            "minLength": 1,
+            "maxLength": 120,
+            "type": "string"
+          },
+          "type": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "http"
+                ]
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "https"
+                ]
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "socks5"
+                ]
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "socks4"
+                ]
+              }
+            ]
+          },
+          "host": {
+            "minLength": 1,
+            "maxLength": 253,
+            "type": "string"
+          },
+          "port": {
+            "minimum": 1,
+            "maximum": 65535,
+            "type": "integer"
+          },
+          "username": {
+            "maxLength": 512,
+            "type": "string"
+          },
+          "password": {
+            "maxLength": 4096,
+            "type": "string"
+          },
+          "change_ip_url": {
+            "maxLength": 2048,
+            "type": "string"
+          },
+          "session_pattern": {
+            "maxLength": 512,
+            "type": "string"
+          },
+          "provider": {
+            "maxLength": 80,
+            "type": "string"
+          },
+          "udp": {
+            "type": "boolean"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "minLength": 1,
+              "maxLength": 40,
+              "type": "string"
+            }
+          },
+          "notes": {
+            "maxLength": 4000,
+            "type": "string"
+          }
+        }
+      },
+      "ProfileManifest": {
+        "title": "Ant0 profile manifest v1",
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "schema",
+          "id",
+          "name",
+          "group",
+          "tags",
+          "notes",
+          "status",
+          "pinned",
+          "created_at",
+          "updated_at",
+          "browser",
+          "identity",
+          "network",
+          "overrides",
+          "launch"
+        ],
+        "properties": {
+          "schema": {
+            "enum": [
+              "ant0-profile/v1"
+            ]
+          },
+          "id": {
+            "$ref": "#/components/schemas/ProfileUuid"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "group": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "tags": {
+            "$ref": "#/components/schemas/ProfileTags"
+          },
+          "notes": {
+            "type": "string",
+            "maxLength": 4000
+          },
+          "status": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "pinned": {
+            "type": "boolean"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "browser": {
+            "$ref": "#/components/schemas/ProfileBrowser"
+          },
+          "identity": {
+            "$ref": "#/components/schemas/ProfileIdentity"
+          },
+          "network": {
+            "$ref": "#/components/schemas/ProfileNetwork"
+          },
+          "overrides": {
+            "$ref": "#/components/schemas/ProfileOverrides"
+          },
+          "launch": {
+            "$ref": "#/components/schemas/ProfileLaunch"
+          }
+        }
+      },
+      "ProfileUuid": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "ProfileTags": {
+        "type": "array",
+        "uniqueItems": true,
+        "items": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40
+        }
+      },
+      "ProfileBrowser": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "channel",
+          "version"
+        ],
+        "properties": {
+          "channel": {
+            "enum": [
+              "stable"
+            ]
+          },
+          "version": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "minLength": 1,
+            "maxLength": 64
+          }
+        }
+      },
+      "ProfileIdentity": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "mode",
+          "key",
+          "source",
+          "profile_ref"
+        ],
+        "properties": {
+          "mode": {
+            "enum": [
+              "synthetic",
+              "captured",
+              "native"
+            ]
+          },
+          "key": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "source": {
+            "type": [
+              "null",
+              "object"
+            ],
+            "additionalProperties": false,
+            "required": [
+              "kind",
+              "version"
+            ],
+            "properties": {
+              "kind": {
+                "enum": [
+                  "population-model",
+                  "templates",
+                  "cloud"
+                ]
+              },
+              "version": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 64
+              }
+            }
+          },
+          "profile_ref": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "minLength": 1,
+            "maxLength": 512,
+            "pattern": "^(?![/\\\\])(?![A-Za-z]:)(?!(.*[/\\\\])?\\.\\.([/\\\\]|$)).+$"
+          }
+        }
+      },
+      "ProfileNetwork": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "proxy_id",
+          "geo",
+          "webrtc"
+        ],
+        "properties": {
+          "proxy_id": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "format": "uuid"
+          },
+          "geo": {
+            "$ref": "#/components/schemas/ProfileGeo"
+          },
+          "webrtc": {
+            "enum": [
+              "proxy-only",
+              "disabled",
+              "host"
+            ]
+          }
+        }
+      },
+      "ProfileGeo": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "source",
+          "timezone",
+          "languages",
+          "latitude",
+          "longitude"
+        ],
+        "properties": {
+          "source": {
+            "enum": [
+              "proxy",
+              "manual",
+              "none"
+            ]
+          },
+          "timezone": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "minLength": 1,
+            "maxLength": 64,
+            "pattern": "^[A-Za-z][A-Za-z0-9_+-]*(?:/[A-Za-z0-9_+-]+)*$"
+          },
+          "languages": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Za-z]{2,8}(?:-[A-Za-z0-9]{1,8})*$"
+            }
+          },
+          "latitude": {
+            "type": [
+              "null",
+              "number"
+            ],
+            "minimum": -90,
+            "maximum": 90
+          },
+          "longitude": {
+            "type": [
+              "null",
+              "number"
+            ],
+            "minimum": -180,
+            "maximum": 180
+          }
+        }
+      },
+      "ProfileOverrides": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "platform": {
+            "enum": [
+              "windows",
+              "linux",
+              "macos",
+              "android"
+            ]
+          },
+          "platformVersion": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64
+          },
+          "brand": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64
+          },
+          "brandVersion": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64
+          },
+          "gpuVendor": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "gpuRenderer": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "hardwareConcurrency": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1024
+          },
+          "deviceMemory": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "maximum": 1024
+          },
+          "screenWidth": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 32768
+          },
+          "screenHeight": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 32768
+          },
+          "availWidth": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 32768
+          },
+          "availHeight": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 32768
+          },
+          "colorDepth": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 64
+          },
+          "devicePixelRatio": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "maximum": 16
+          },
+          "maxTouchPoints": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 256
+          },
+          "location": {
+            "type": "string",
+            "pattern": "^-?(?:90(?:\\.0+)?|[1-8]?[0-9](?:\\.[0-9]+)?), ?-?(?:180(?:\\.0+)?|1[0-7][0-9](?:\\.[0-9]+)?|[1-9]?[0-9](?:\\.[0-9]+)?)$"
+          },
+          "timezone": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64,
+            "pattern": "^[A-Za-z][A-Za-z0-9_+-]*(?:/[A-Za-z0-9_+-]+)*$"
+          },
+          "acceptLanguage": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "webrtcIp": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64
+          },
+          "webrtcMdns": {
+            "enum": [
+              "on",
+              "off"
+            ]
+          },
+          "disableGpuFingerprint": {
+            "type": "boolean"
+          },
+          "fingerprintNoise": {
+            "type": "boolean"
+          },
+          "gpuStringSpoof": {
+            "type": "boolean"
+          },
+          "canvasNoise": {
+            "type": "boolean"
+          },
+          "storageQuota": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "tlsProfile": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 32
+              },
+              {
+                "type": "integer",
+                "minimum": 1
+              }
+            ]
+          }
+        }
+      },
+      "ProfileLaunch": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "start_urls",
+          "extensions",
+          "window",
+          "fonts_resolve",
+          "headless",
+          "extra_args"
+        ],
+        "properties": {
+          "start_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri"
+            }
+          },
+          "extensions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^(?:/|[A-Za-z]:[\\\\/])"
+            }
+          },
+          "window": {
+            "type": [
+              "null",
+              "object"
+            ],
+            "additionalProperties": false,
+            "required": [
+              "width",
+              "height"
+            ],
+            "properties": {
+              "width": {
+                "type": "integer",
+                "minimum": 200,
+                "maximum": 16384
+              },
+              "height": {
+                "type": "integer",
+                "minimum": 200,
+                "maximum": 16384
+              }
+            }
+          },
+          "fonts_resolve": {
+            "type": "boolean"
+          },
+          "headless": {
+            "type": "boolean"
+          },
+          "extra_args": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^--"
+            }
+          }
+        }
+      },
+      "ProfileDetail": {
+        "title": "Ant0 profile detail",
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "schema",
+          "id",
+          "name",
+          "group",
+          "tags",
+          "notes",
+          "status",
+          "pinned",
+          "created_at",
+          "updated_at",
+          "browser",
+          "identity",
+          "network",
+          "overrides",
+          "launch",
+          "runtime",
+          "deleted_at",
+          "platform",
+          "local_folder_id"
+        ],
+        "properties": {
+          "schema": {
+            "enum": [
+              "ant0-profile/v1"
+            ]
+          },
+          "id": {
+            "$ref": "#/components/schemas/ProfileUuid"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "group": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "tags": {
+            "$ref": "#/components/schemas/ProfileTags"
+          },
+          "notes": {
+            "type": "string",
+            "maxLength": 4000
+          },
+          "status": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "pinned": {
+            "type": "boolean"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "browser": {
+            "$ref": "#/components/schemas/ProfileBrowser"
+          },
+          "identity": {
+            "$ref": "#/components/schemas/ProfileIdentity"
+          },
+          "network": {
+            "$ref": "#/components/schemas/ProfileNetwork"
+          },
+          "overrides": {
+            "$ref": "#/components/schemas/ProfileOverrides"
+          },
+          "launch": {
+            "$ref": "#/components/schemas/ProfileLaunch"
+          },
+          "runtime": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Session"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "deleted_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "platform": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "enum": [
+              "windows",
+              "linux",
+              "macos",
+              "android",
+              null
+            ]
+          },
+          "local_folder_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      },
+      "ProfileInput": {
+        "title": "Ant0 profile input",
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "group": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "tags": {
+            "$ref": "#/components/schemas/ProfileInputTags"
+          },
+          "notes": {
+            "type": "string",
+            "maxLength": 4000
+          },
+          "status": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "pinned": {
+            "type": "boolean"
+          },
+          "browser": {
+            "$ref": "#/components/schemas/ProfileInputBrowser"
+          },
+          "identity": {
+            "$ref": "#/components/schemas/ProfileInputIdentity"
+          },
+          "network": {
+            "$ref": "#/components/schemas/ProfileInputNetwork"
+          },
+          "overrides": {
+            "$ref": "#/components/schemas/ProfileInputOverrides"
+          },
+          "launch": {
+            "$ref": "#/components/schemas/ProfileInputLaunch"
+          },
+          "local_folder_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      },
+      "ProfileInputTags": {
+        "type": "array",
+        "uniqueItems": true,
+        "items": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40
+        }
+      },
+      "ProfileInputBrowser": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "channel": {
+            "enum": [
+              "stable"
+            ]
+          },
+          "version": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1,
+            "maxLength": 64
+          }
+        }
+      },
+      "ProfileInputIdentity": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "mode": {
+            "enum": [
+              "synthetic",
+              "captured",
+              "native"
+            ]
+          },
+          "key": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "source": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "kind": {
+                "enum": [
+                  "population-model",
+                  "templates",
+                  "cloud"
+                ]
+              },
+              "version": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 64
+              }
+            }
+          },
+          "profile_ref": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1,
+            "maxLength": 512,
+            "pattern": "^(?![/\\\\])(?![A-Za-z]:)(?!(.*[/\\\\])?\\.\\.([/\\\\]|$)).+$"
+          }
+        }
+      },
+      "ProfileInputNetwork": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "proxy_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid"
+          },
+          "geo": {
+            "$ref": "#/components/schemas/ProfileInputGeo"
+          },
+          "webrtc": {
+            "enum": [
+              "proxy-only",
+              "disabled",
+              "host"
+            ]
+          },
+          "proxy": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ProxyCreate"
+              },
+              {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "url"
+                ],
+                "properties": {
+                  "url": {
+                    "minLength": 1,
+                    "maxLength": 2048,
+                    "type": "string"
+                  }
+                }
+              },
+              {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "line"
+                ],
+                "properties": {
+                  "line": {
+                    "minLength": 1,
+                    "maxLength": 2048,
+                    "type": "string"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      },
+      "ProfileInputGeo": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "source": {
+            "enum": [
+              "proxy",
+              "manual",
+              "none"
+            ]
+          },
+          "timezone": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1,
+            "maxLength": 64,
+            "pattern": "^[A-Za-z][A-Za-z0-9_+-]*(?:/[A-Za-z0-9_+-]+)*$"
+          },
+          "languages": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Za-z]{2,8}(?:-[A-Za-z0-9]{1,8})*$"
+            }
+          },
+          "latitude": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": -90,
+            "maximum": 90
+          },
+          "longitude": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": -180,
+            "maximum": 180
+          }
+        }
+      },
+      "ProfileInputOverrides": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "platform": {
+            "enum": [
+              "windows",
+              "linux",
+              "macos",
+              "android",
+              null
+            ]
+          },
+          "platformVersion": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1,
+            "maxLength": 64
+          },
+          "brand": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1,
+            "maxLength": 64
+          },
+          "brandVersion": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1,
+            "maxLength": 64
+          },
+          "gpuVendor": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "gpuRenderer": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "hardwareConcurrency": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 1,
+            "maximum": 1024
+          },
+          "deviceMemory": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "exclusiveMinimum": 0,
+            "maximum": 1024
+          },
+          "screenWidth": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 1,
+            "maximum": 32768
+          },
+          "screenHeight": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 1,
+            "maximum": 32768
+          },
+          "availWidth": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 1,
+            "maximum": 32768
+          },
+          "availHeight": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 1,
+            "maximum": 32768
+          },
+          "colorDepth": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 1,
+            "maximum": 64
+          },
+          "devicePixelRatio": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "exclusiveMinimum": 0,
+            "maximum": 16
+          },
+          "maxTouchPoints": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0,
+            "maximum": 256
+          },
+          "location": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^-?(?:90(?:\\.0+)?|[1-8]?[0-9](?:\\.[0-9]+)?), ?-?(?:180(?:\\.0+)?|1[0-7][0-9](?:\\.[0-9]+)?|[1-9]?[0-9](?:\\.[0-9]+)?)$"
+          },
+          "timezone": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1,
+            "maxLength": 64,
+            "pattern": "^[A-Za-z][A-Za-z0-9_+-]*(?:/[A-Za-z0-9_+-]+)*$"
+          },
+          "acceptLanguage": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "webrtcIp": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1,
+            "maxLength": 64
+          },
+          "webrtcMdns": {
+            "enum": [
+              "on",
+              "off",
+              null
+            ]
+          },
+          "disableGpuFingerprint": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "fingerprintNoise": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "gpuStringSpoof": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "canvasNoise": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "storageQuota": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "tlsProfile": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 32
+              },
+              {
+                "type": "integer",
+                "minimum": 1
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "canvasBridge": {
+            "deprecated": true
+          }
+        }
+      },
+      "ProfileInputLaunch": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "start_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri"
+            }
+          },
+          "extensions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^(?:/|[A-Za-z]:[\\\\/])"
+            }
+          },
+          "window": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "width": {
+                "type": "integer",
+                "minimum": 200,
+                "maximum": 16384
+              },
+              "height": {
+                "type": "integer",
+                "minimum": 200,
+                "maximum": 16384
+              }
+            }
+          },
+          "fonts_resolve": {
+            "type": "boolean"
+          },
+          "headless": {
+            "type": "boolean"
+          },
+          "extra_args": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^--"
+            }
+          }
+        }
+      },
+      "ProfileCreate": {
+        "title": "Ant0 profile create",
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "group": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "tags": {
+            "$ref": "#/components/schemas/ProfileInputTags"
+          },
+          "notes": {
+            "type": "string",
+            "maxLength": 4000
+          },
+          "status": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "pinned": {
+            "type": "boolean"
+          },
+          "browser": {
+            "$ref": "#/components/schemas/ProfileInputBrowser"
+          },
+          "identity": {
+            "$ref": "#/components/schemas/ProfileInputIdentity"
+          },
+          "network": {
+            "$ref": "#/components/schemas/ProfileInputNetwork"
+          },
+          "overrides": {
+            "$ref": "#/components/schemas/ProfileInputOverrides"
+          },
+          "launch": {
+            "$ref": "#/components/schemas/ProfileInputLaunch"
+          },
+          "local_folder_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "ProfileSummary": {
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "group",
+          "local_folder_id",
+          "tags",
+          "notes",
+          "status",
+          "pinned",
+          "platform",
+          "proxy_id",
+          "browser_version",
+          "identity_mode",
+          "created_at",
+          "updated_at",
+          "last_launched_at",
+          "deleted_at"
+        ],
+        "properties": {
+          "id": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "group": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "local_folder_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "notes": {
+            "type": "string"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "pinned": {
+            "type": "boolean"
+          },
+          "platform": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "enum": [
+              "windows",
+              "linux",
+              "macos",
+              "android",
+              null
+            ]
+          },
+          "proxy_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "browser_version": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "identity_mode": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "synthetic"
+                ]
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "captured"
+                ]
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "native"
+                ]
+              }
+            ]
+          },
+          "created_at": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updated_at": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "last_launched_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "deleted_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      },
+      "Lifecycle": {
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "profile_id",
+          "state",
+          "started_at",
+          "browser_version",
+          "headless"
+        ],
+        "properties": {
+          "profile_id": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "state": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "starting"
+                ]
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "running"
+                ]
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "stopping"
+                ]
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "stopped"
+                ]
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "crashed"
+                ]
+              }
+            ]
+          },
+          "started_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "browser_version": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "headless": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      },
+      "ProxyInventory": {
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "type",
+          "last_check"
+        ],
+        "properties": {
+          "id": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "type": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "http"
+                ]
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "https"
+                ]
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "socks5"
+                ]
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "socks4"
+                ]
+              }
+            ]
+          },
+          "last_check": {
+            "anyOf": [
+              {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "ok",
+                  "country",
+                  "latency_ms",
+                  "at"
+                ],
+                "properties": {
+                  "ok": {
+                    "type": "boolean"
+                  },
+                  "country": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "latency_ms": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "at": {
+                    "format": "date-time",
+                    "type": "string"
+                  }
+                }
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      },
+      "ProxyInventoryEntry": {
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "type",
+          "last_check"
+        ],
+        "properties": {
+          "id": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "type": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "http"
+                ]
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "https"
+                ]
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "socks5"
+                ]
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "socks4"
+                ]
+              }
+            ]
+          },
+          "last_check": {
+            "anyOf": [
+              {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "ok",
+                  "country",
+                  "latency_ms",
+                  "at"
+                ],
+                "properties": {
+                  "ok": {
+                    "type": "boolean"
+                  },
+                  "country": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "latency_ms": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "at": {
+                    "format": "date-time",
+                    "type": "string"
+                  }
+                }
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "ProfileInventory": {
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "profile",
+          "lifecycle",
+          "proxy",
+          "permissions",
+          "authority",
+          "authority_reason"
+        ],
+        "properties": {
+          "profile": {
+            "$ref": "#/components/schemas/ProfileSummary"
+          },
+          "lifecycle": {
+            "$ref": "#/components/schemas/Lifecycle"
+          },
+          "proxy": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ProxyInventory"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "permissions": {
+            "additionalProperties": false,
+            "type": "object",
+            "required": [
+              "edit",
+              "cdp"
+            ],
+            "properties": {
+              "edit": {
+                "type": "boolean"
+              },
+              "cdp": {
+                "type": "boolean"
+              }
+            }
+          },
+          "authority": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "ok"
+                ]
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "needs_review"
+                ]
+              }
+            ]
+          },
+          "authority_reason": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "legacy_unclassified"
+                ]
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "restricted_origin_missing"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      },
+      "KeyCtx": {
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "kind",
+          "key_id",
+          "user_id",
+          "workspace_id",
+          "device_id",
+          "role_ceiling",
+          "current_role",
+          "scopes",
+          "expires_at"
+        ],
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "api_key"
+            ]
+          },
+          "key_id": {
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+            "type": "string"
+          },
+          "user_id": {
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+            "type": "string"
+          },
+          "workspace_id": {
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+            "type": "string"
+          },
+          "device_id": {
+            "pattern": "^[A-Z2-7]{26}$",
+            "type": "string"
+          },
+          "role_ceiling": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "owner"
+                ]
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "manager"
+                ]
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "operator"
+                ]
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "starter"
+                ]
+              }
+            ]
+          },
+          "current_role": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "owner"
+                ]
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "manager"
+                ]
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "operator"
+                ]
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "starter"
+                ]
+              }
+            ]
+          },
+          "scopes": {
+            "minItems": 1,
+            "maxItems": 6,
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "enum": [
+                        "status:read"
+                      ]
+                    },
+                    {
+                      "type": "string",
+                      "enum": [
+                        "profiles:read"
+                      ]
+                    },
+                    {
+                      "type": "string",
+                      "enum": [
+                        "proxies:read"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "enum": [
+                        "profiles:read"
+                      ]
+                    },
+                    {
+                      "type": "string",
+                      "enum": [
+                        "profiles:run"
+                      ]
+                    },
+                    {
+                      "type": "string",
+                      "enum": [
+                        "profiles:stop"
+                      ]
+                    },
+                    {
+                      "type": "string",
+                      "enum": [
+                        "profiles:cdp"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          "expires_at": {
+            "format": "date-time",
+            "type": "string"
+          }
+        }
+      },
+      "KeyReadStatus": {
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "state",
+          "mode",
+          "plan",
+          "limits",
+          "used",
+          "features",
+          "billing",
+          "expires_at",
+          "grace_until",
+          "online",
+          "last_refresh_at",
+          "used_local"
+        ],
+        "properties": {
+          "state": {
+            "type": "string",
+            "enum": [
+              "active"
+            ]
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "enforce"
+            ]
+          },
+          "plan": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "limits": {
+            "additionalProperties": false,
+            "type": "object",
+            "required": [
+              "profiles",
+              "seats"
+            ],
+            "properties": {
+              "profiles": {
+                "minimum": 0,
+                "maximum": 9007199254740991,
+                "type": "integer"
+              },
+              "seats": {
+                "minimum": 1,
+                "maximum": 9007199254740991,
+                "type": "integer"
+              }
+            }
+          },
+          "used": {
+            "minimum": 0,
+            "maximum": 9007199254740991,
+            "type": "integer"
+          },
+          "features": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "billing": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "active"
+                ]
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "past_due"
+                ]
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "lapsed"
+                ]
+              }
+            ]
+          },
+          "expires_at": {
+            "type": "null"
+          },
+          "grace_until": {
+            "type": "null"
+          },
+          "online": {
+            "type": "boolean",
+            "enum": [
+              true
+            ]
+          },
+          "last_refresh_at": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "used_local": {
+            "minimum": 0,
+            "type": "integer"
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/v1/automation/status": {
+      "get": {
+        "operationId": "getAutomationStatus",
+        "tags": [
+          "automation"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "default": "api",
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "api"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "mcp"
+                  ]
+                }
+              ]
+            },
+            "in": "header",
+            "name": "x-ant0-consumer",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "type": "object",
+                  "required": [
+                    "principal",
+                    "daemon",
+                    "licence"
+                  ],
+                  "properties": {
+                    "principal": {
+                      "$ref": "#/components/schemas/KeyCtx"
+                    },
+                    "daemon": {
+                      "additionalProperties": false,
+                      "type": "object",
+                      "required": [
+                        "ok",
+                        "version",
+                        "uptime_s"
+                      ],
+                      "properties": {
+                        "ok": {
+                          "type": "boolean",
+                          "enum": [
+                            true
+                          ]
+                        },
+                        "version": {
+                          "type": "string"
+                        },
+                        "uptime_s": {
+                          "minimum": 0,
+                          "type": "integer"
+                        }
+                      }
+                    },
+                    "licence": {
+                      "$ref": "#/components/schemas/KeyReadStatus"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/health": {
+      "get": {
+        "tags": [
+          "health"
+        ],
+        "security": [],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "type": "object",
+                  "required": [
+                    "ok",
+                    "version",
+                    "pid",
+                    "uptime_s",
+                    "home"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "version": {
+                      "type": "string"
+                    },
+                    "pid": {
+                      "type": "integer"
+                    },
+                    "uptime_s": {
+                      "type": "number"
+                    },
+                    "home": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/inventory/profiles": {
+      "get": {
+        "operationId": "listProfileInventory",
+        "tags": [
+          "inventory"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "q",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "group",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "tag",
+            "required": false
+          },
+          {
+            "schema": {
+              "minimum": 1,
+              "maximum": 1000,
+              "default": 100,
+              "type": "integer"
+            },
+            "in": "query",
+            "name": "limit",
+            "required": false
+          },
+          {
+            "schema": {
+              "minimum": 0,
+              "default": 0,
+              "type": "integer"
+            },
+            "in": "query",
+            "name": "offset",
+            "required": false
+          },
+          {
+            "schema": {
+              "default": false,
+              "type": "boolean"
+            },
+            "in": "query",
+            "name": "trashed",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "boolean"
+            },
+            "in": "query",
+            "name": "running",
+            "required": false
+          },
+          {
+            "schema": {
+              "default": "api",
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "api"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "mcp"
+                  ]
+                }
+              ]
+            },
+            "in": "header",
+            "name": "x-ant0-consumer",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "type": "object",
+                  "required": [
+                    "items",
+                    "total"
+                  ],
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ProfileInventory"
+                      }
+                    },
+                    "total": {
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    "revision": {
+                      "minimum": 0,
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/inventory/profiles/{id}": {
+      "get": {
+        "operationId": "getProfileInventory",
+        "tags": [
+          "inventory"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 120,
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          },
+          {
+            "schema": {
+              "default": "api",
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "api"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "mcp"
+                  ]
+                }
+              ]
+            },
+            "in": "header",
+            "name": "x-ant0-consumer",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProfileInventory"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/inventory/proxies": {
+      "get": {
+        "operationId": "listProxyInventory",
+        "tags": [
+          "inventory"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "minimum": 1,
+              "maximum": 1000,
+              "default": 100,
+              "type": "integer"
+            },
+            "in": "query",
+            "name": "limit",
+            "required": false
+          },
+          {
+            "schema": {
+              "minimum": 0,
+              "default": 0,
+              "type": "integer"
+            },
+            "in": "query",
+            "name": "offset",
+            "required": false
+          },
+          {
+            "schema": {
+              "default": "api",
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "api"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "mcp"
+                  ]
+                }
+              ]
+            },
+            "in": "header",
+            "name": "x-ant0-consumer",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "type": "object",
+                  "required": [
+                    "items",
+                    "total"
+                  ],
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ProxyInventoryEntry"
+                      }
+                    },
+                    "total": {
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    "revision": {
+                      "minimum": 0,
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/licence": {
+      "get": {
+        "tags": [
+          "licence"
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LicenceState"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/profiles": {
+      "post": {
+        "tags": [
+          "profiles"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProfileCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProfileManifest"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/profiles/{id}": {
+      "get": {
+        "tags": [
+          "profiles"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 120,
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProfileDetail"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "profiles"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProfileInput"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 120,
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProfileManifest"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "423": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "profiles"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 120,
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {},
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "423": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/profiles/{id}/cookies": {
+      "post": {
+        "tags": [
+          "cookies"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "format",
+                  "data"
+                ],
+                "properties": {
+                  "format": {
+                    "default": "auto",
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "auto"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "json"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "netscape"
+                        ]
+                      }
+                    ]
+                  },
+                  "data": {
+                    "minLength": 1,
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 120,
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "type": "object",
+                  "required": [
+                    "imported",
+                    "applied"
+                  ],
+                  "properties": {
+                    "imported": {
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    "applied": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "now"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "next_start"
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "423": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "502": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "cookies"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "default": "json",
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "json"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "netscape"
+                  ]
+                }
+              ]
+            },
+            "in": "query",
+            "name": "format",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 120,
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "502": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/profiles/{id}/duplicate": {
+      "post": {
+        "tags": [
+          "profiles"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "minLength": 1,
+                    "maxLength": 120,
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 120,
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProfileManifest"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/profiles/{id}/identity": {
+      "get": {
+        "tags": [
+          "profiles"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 120,
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "type": "object",
+                  "required": [
+                    "mode",
+                    "persona",
+                    "source",
+                    "persisted",
+                    "warnings"
+                  ],
+                  "properties": {
+                    "mode": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "synthetic"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "captured"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "native"
+                          ]
+                        }
+                      ]
+                    },
+                    "persona": {
+                      "type": [
+                        "null",
+                        "object"
+                      ],
+                      "additionalProperties": true
+                    },
+                    "source": {
+                      "anyOf": [
+                        {
+                          "additionalProperties": false,
+                          "type": "object",
+                          "required": [
+                            "kind",
+                            "version"
+                          ],
+                          "properties": {
+                            "kind": {
+                              "type": "string"
+                            },
+                            "version": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "persisted": {
+                      "type": "boolean"
+                    },
+                    "warnings": {
+                      "type": "array",
+                      "items": {
+                        "additionalProperties": false,
+                        "type": "object",
+                        "required": [
+                          "code",
+                          "message"
+                        ],
+                        "properties": {
+                          "code": {
+                            "type": "string"
+                          },
+                          "message": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/profiles/{id}/page/click": {
+      "post": {
+        "tags": [
+          "page"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "ref"
+                ],
+                "properties": {
+                  "tab": {
+                    "pattern": "^[A-Za-z0-9-]{8,64}$",
+                    "type": "string"
+                  },
+                  "ref": {
+                    "minLength": 1,
+                    "maxLength": 32,
+                    "pattern": "^[A-Za-z0-9]+$",
+                    "type": "string"
+                  },
+                  "button": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "left"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "right"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "middle"
+                        ]
+                      }
+                    ]
+                  },
+                  "double": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 120,
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "x-ant0-stability": "beta",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "type": "object",
+                  "required": [
+                    "ok"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "408": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "502": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/profiles/{id}/page/fill": {
+      "post": {
+        "tags": [
+          "page"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "fields"
+                ],
+                "properties": {
+                  "tab": {
+                    "pattern": "^[A-Za-z0-9-]{8,64}$",
+                    "type": "string"
+                  },
+                  "fields": {
+                    "minItems": 1,
+                    "maxItems": 50,
+                    "type": "array",
+                    "items": {
+                      "additionalProperties": false,
+                      "type": "object",
+                      "required": [
+                        "ref",
+                        "value"
+                      ],
+                      "properties": {
+                        "ref": {
+                          "minLength": 1,
+                          "maxLength": 32,
+                          "pattern": "^[A-Za-z0-9]+$",
+                          "type": "string"
+                        },
+                        "value": {
+                          "maxLength": 2000,
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 120,
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "x-ant0-stability": "beta",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "type": "object",
+                  "required": [
+                    "ok"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "408": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "502": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/profiles/{id}/page/key": {
+      "post": {
+        "tags": [
+          "page"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "key"
+                ],
+                "properties": {
+                  "tab": {
+                    "pattern": "^[A-Za-z0-9-]{8,64}$",
+                    "type": "string"
+                  },
+                  "key": {
+                    "minLength": 1,
+                    "maxLength": 64,
+                    "type": "string"
+                  },
+                  "ref": {
+                    "minLength": 1,
+                    "maxLength": 32,
+                    "pattern": "^[A-Za-z0-9]+$",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 120,
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "x-ant0-stability": "beta",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "type": "object",
+                  "required": [
+                    "ok"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "408": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "502": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/profiles/{id}/page/navigate": {
+      "post": {
+        "tags": [
+          "page"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "properties": {
+                  "tab": {
+                    "pattern": "^[A-Za-z0-9-]{8,64}$",
+                    "type": "string"
+                  },
+                  "url": {
+                    "minLength": 8,
+                    "maxLength": 8192,
+                    "pattern": "^[hH][tT][tT][pP][sS]?://",
+                    "type": "string"
+                  },
+                  "action": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "back"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "forward"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "reload"
+                        ]
+                      }
+                    ]
+                  },
+                  "wait": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "domcontentloaded"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "load"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 120,
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "x-ant0-stability": "beta",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "type": "object",
+                  "required": [
+                    "tab",
+                    "url",
+                    "title"
+                  ],
+                  "properties": {
+                    "tab": {
+                      "type": "string"
+                    },
+                    "url": {
+                      "type": "string"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "408": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "502": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/profiles/{id}/page/screenshot": {
+      "get": {
+        "tags": [
+          "page"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "pattern": "^[A-Za-z0-9-]{8,64}$",
+              "type": "string"
+            },
+            "in": "query",
+            "name": "tab",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 32,
+              "pattern": "^[A-Za-z0-9]+$",
+              "type": "string"
+            },
+            "in": "query",
+            "name": "ref",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 120,
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "x-ant0-stability": "beta",
+        "responses": {
+          "200": {
+            "headers": {
+              "x-image-width": {
+                "schema": {
+                  "schema": {
+                    "type": "integer"
+                  }
+                }
+              },
+              "x-image-height": {
+                "schema": {
+                  "schema": {
+                    "type": "integer"
+                  }
+                }
+              }
+            },
+            "content": {
+              "image/png": {
+                "schema": {
+                  "format": "binary",
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "408": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "502": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/profiles/{id}/page/select": {
+      "post": {
+        "tags": [
+          "page"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "ref",
+                  "value"
+                ],
+                "properties": {
+                  "tab": {
+                    "pattern": "^[A-Za-z0-9-]{8,64}$",
+                    "type": "string"
+                  },
+                  "ref": {
+                    "minLength": 1,
+                    "maxLength": 32,
+                    "pattern": "^[A-Za-z0-9]+$",
+                    "type": "string"
+                  },
+                  "value": {
+                    "maxLength": 1000,
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 120,
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "x-ant0-stability": "beta",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "type": "object",
+                  "required": [
+                    "ok",
+                    "changed"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "changed": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "408": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "502": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/profiles/{id}/page/snapshot": {
+      "get": {
+        "tags": [
+          "page"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "pattern": "^[A-Za-z0-9-]{8,64}$",
+              "type": "string"
+            },
+            "in": "query",
+            "name": "tab",
+            "required": false
+          },
+          {
+            "schema": {
+              "minimum": 200,
+              "maximum": 100000,
+              "type": "integer"
+            },
+            "in": "query",
+            "name": "max_chars",
+            "required": false
+          },
+          {
+            "schema": {
+              "minimum": 1,
+              "maximum": 20000,
+              "type": "integer"
+            },
+            "in": "query",
+            "name": "max_refs",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 120,
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "x-ant0-stability": "beta",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "type": "object",
+                  "required": [
+                    "tab",
+                    "url",
+                    "title",
+                    "snapshot",
+                    "ref_count",
+                    "truncated"
+                  ],
+                  "properties": {
+                    "tab": {
+                      "type": "string"
+                    },
+                    "url": {
+                      "type": "string"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "snapshot": {
+                      "type": "string"
+                    },
+                    "ref_count": {
+                      "type": "integer"
+                    },
+                    "truncated": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "408": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "502": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/profiles/{id}/page/tabs": {
+      "get": {
+        "tags": [
+          "page"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 120,
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "x-ant0-stability": "beta",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "type": "object",
+                  "required": [
+                    "items"
+                  ],
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "additionalProperties": false,
+                        "type": "object",
+                        "required": [
+                          "id",
+                          "url",
+                          "title",
+                          "active"
+                        ],
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "url": {
+                            "type": "string"
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "active": {
+                            "type": "boolean"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "408": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "502": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "page"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "action"
+                ],
+                "properties": {
+                  "action": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "new"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "select"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "close"
+                        ]
+                      }
+                    ]
+                  },
+                  "url": {
+                    "minLength": 8,
+                    "maxLength": 8192,
+                    "pattern": "^[hH][tT][tT][pP][sS]?://",
+                    "type": "string"
+                  },
+                  "tab": {
+                    "pattern": "^[A-Za-z0-9-]{8,64}$",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 120,
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "x-ant0-stability": "beta",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "type": "object",
+                  "required": [
+                    "tab",
+                    "closed"
+                  ],
+                  "properties": {
+                    "tab": {
+                      "anyOf": [
+                        {
+                          "additionalProperties": false,
+                          "type": "object",
+                          "required": [
+                            "id",
+                            "url",
+                            "title",
+                            "active"
+                          ],
+                          "properties": {
+                            "id": {
+                              "type": "string"
+                            },
+                            "url": {
+                              "type": "string"
+                            },
+                            "title": {
+                              "type": "string"
+                            },
+                            "active": {
+                              "type": "boolean"
+                            }
+                          }
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "closed": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "408": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "502": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/profiles/{id}/page/text": {
+      "get": {
+        "tags": [
+          "page"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "pattern": "^[A-Za-z0-9-]{8,64}$",
+              "type": "string"
+            },
+            "in": "query",
+            "name": "tab",
+            "required": false
+          },
+          {
+            "schema": {
+              "minimum": 1,
+              "maximum": 100000,
+              "type": "integer"
+            },
+            "in": "query",
+            "name": "max_chars",
+            "required": false
+          },
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 120,
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "x-ant0-stability": "beta",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "type": "object",
+                  "required": [
+                    "tab",
+                    "text",
+                    "truncated"
+                  ],
+                  "properties": {
+                    "tab": {
+                      "type": "string"
+                    },
+                    "text": {
+                      "type": "string"
+                    },
+                    "truncated": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "408": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "502": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/profiles/{id}/page/type": {
+      "post": {
+        "tags": [
+          "page"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "ref",
+                  "text"
+                ],
+                "properties": {
+                  "tab": {
+                    "pattern": "^[A-Za-z0-9-]{8,64}$",
+                    "type": "string"
+                  },
+                  "ref": {
+                    "minLength": 1,
+                    "maxLength": 32,
+                    "pattern": "^[A-Za-z0-9]+$",
+                    "type": "string"
+                  },
+                  "text": {
+                    "maxLength": 1000,
+                    "type": "string"
+                  },
+                  "submit": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 120,
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "x-ant0-stability": "beta",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "type": "object",
+                  "required": [
+                    "ok"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "408": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "502": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/profiles/{id}/page/wait": {
+      "post": {
+        "tags": [
+          "page"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "properties": {
+                  "tab": {
+                    "pattern": "^[A-Za-z0-9-]{8,64}$",
+                    "type": "string"
+                  },
+                  "text": {
+                    "minLength": 1,
+                    "maxLength": 1000,
+                    "type": "string"
+                  },
+                  "ref": {
+                    "minLength": 1,
+                    "maxLength": 32,
+                    "pattern": "^[A-Za-z0-9]+$",
+                    "type": "string"
+                  },
+                  "url": {
+                    "minLength": 1,
+                    "maxLength": 4000,
+                    "type": "string"
+                  },
+                  "time_ms": {
+                    "minimum": 0,
+                    "maximum": 30000,
+                    "type": "integer"
+                  },
+                  "timeout_ms": {
+                    "minimum": 1,
+                    "maximum": 30000,
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 120,
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "x-ant0-stability": "beta",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "type": "object",
+                  "required": [
+                    "ok"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "408": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "502": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/profiles/{id}/restore": {
+      "post": {
+        "tags": [
+          "profiles"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 120,
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProfileManifest"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/profiles/{id}/run": {
+      "post": {
+        "tags": [
+          "profiles"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "properties": {
+                  "timeout_s": {
+                    "minimum": 1,
+                    "maximum": 600,
+                    "type": "number"
+                  },
+                  "conflict_profile_id": {
+                    "format": "uuid",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 120,
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          },
+          {
+            "schema": {
+              "default": "api",
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "api"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "mcp"
+                  ]
+                }
+              ]
+            },
+            "in": "header",
+            "name": "x-ant0-consumer",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "title": "RunResult",
+                  "type": "object",
+                  "required": [
+                    "requested_profile_id",
+                    "profile_id",
+                    "redirected",
+                    "lifecycle"
+                  ],
+                  "properties": {
+                    "requested_profile_id": {
+                      "format": "uuid",
+                      "type": "string"
+                    },
+                    "profile_id": {
+                      "format": "uuid",
+                      "type": "string"
+                    },
+                    "redirected": {
+                      "type": "boolean"
+                    },
+                    "lifecycle": {
+                      "$ref": "#/components/schemas/Lifecycle"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "423": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/profiles/{id}/status": {
+      "get": {
+        "tags": [
+          "profiles"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 120,
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          },
+          {
+            "schema": {
+              "default": "api",
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "api"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "mcp"
+                  ]
+                }
+              ]
+            },
+            "in": "header",
+            "name": "x-ant0-consumer",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "type": "object",
+                  "required": [
+                    "state",
+                    "session"
+                  ],
+                  "properties": {
+                    "state": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "starting"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "running"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "stopping"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "stopped"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "crashed"
+                          ]
+                        }
+                      ]
+                    },
+                    "session": {
+                      "anyOf": [
+                        {
+                          "$ref": "#/components/schemas/Session"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/profiles/{id}/stop": {
+      "post": {
+        "tags": [
+          "profiles"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "properties": {
+                  "force": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "minLength": 1,
+              "maxLength": 120,
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          },
+          {
+            "schema": {
+              "default": "api",
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "api"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "mcp"
+                  ]
+                }
+              ]
+            },
+            "in": "header",
+            "name": "x-ant0-consumer",
+            "required": false
+          }
+        ],
+        "responses": {
+          "204": {
+            "headers": {
+              "Ant0-Sync": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "done",
+                    "pending"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "423": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/proxies": {
+      "post": {
+        "tags": [
+          "proxies"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/ProxyCreate"
+                  },
+                  {
+                    "additionalProperties": false,
+                    "type": "object",
+                    "required": [
+                      "url"
+                    ],
+                    "properties": {
+                      "url": {
+                        "minLength": 1,
+                        "maxLength": 2048,
+                        "type": "string"
+                      }
+                    }
+                  },
+                  {
+                    "additionalProperties": false,
+                    "type": "object",
+                    "required": [
+                      "line"
+                    ],
+                    "properties": {
+                      "line": {
+                        "minLength": 1,
+                        "maxLength": 2048,
+                        "type": "string"
+                      }
+                    }
+                  },
+                  {
+                    "additionalProperties": false,
+                    "type": "object",
+                    "required": [
+                      "lines"
+                    ],
+                    "properties": {
+                      "lines": {
+                        "minLength": 1,
+                        "type": "string"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/Proxy"
+                    },
+                    {
+                      "additionalProperties": false,
+                      "type": "object",
+                      "required": [
+                        "created",
+                        "errors"
+                      ],
+                      "properties": {
+                        "created": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/Proxy"
+                          }
+                        },
+                        "errors": {
+                          "type": "array",
+                          "items": {
+                            "additionalProperties": false,
+                            "type": "object",
+                            "required": [
+                              "line",
+                              "message"
+                            ],
+                            "properties": {
+                              "line": {
+                                "type": "integer"
+                              },
+                              "message": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/proxies/{id}/change-ip": {
+      "post": {
+        "tags": [
+          "proxies"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "type": "object",
+                  "required": [
+                    "status"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "502": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/proxies/{id}/check": {
+      "post": {
+        "tags": [
+          "proxies"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProxyCheck"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:{port}",
+      "variables": {
+        "port": {
+          "default": "27100"
+        }
+      }
+    }
+  ],
+  "security": [
+    {
+      "bearer": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "health"
+    },
+    {
+      "name": "profiles"
+    },
+    {
+      "name": "inventory"
+    },
+    {
+      "name": "automation"
+    },
+    {
+      "name": "cookies"
+    },
+    {
+      "name": "proxies"
+    },
+    {
+      "name": "licence"
+    },
+    {
+      "name": "page"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "manifest_version": "0.3",
+  "name": "ant0",
+  "display_name": "Ant0",
+  "version": "__VERSION__",
+  "description": "Ant0 is a browser for automation and agents. Pre-release. Needs the Ant0 desktop app running on this computer.",
+  "long_description": "Ant0 is a browser for automation and agents. Each profile has its own saved identity, proxy, cookies and storage. This server lets an agent pick or create a profile, run it, and work in its tabs.\n\nPre-release: built from Ant0 desktop 0.3.22-beta.2.\n\nRequirement: the Ant0 desktop app must be installed and running on this computer (https://ant0.link). The server talks only to that local app and holds no account keys.",
+  "author": { "name": "Ant0", "url": "https://ant0.link" },
+  "homepage": "https://ant0.link",
+  "documentation": "https://docs.ant0.link",
+  "repository": { "type": "git", "url": "https://github.com/Ant0-Browser/ant0-mcp" },
+  "support": "https://github.com/Ant0-Browser/ant0-mcp/issues",
+  "license": "BSD-3-Clause",
+  "keywords": ["browser", "automation", "agents", "profiles", "proxy"],
+  "server": {
+    "type": "node",
+    "entry_point": "server/ant0-mcp.js",
+    "mcp_config": {
+      "command": "node",
+      "args": ["${__dirname}/server/ant0-mcp.js", "serve", "--stdio"]
+    }
+  },
+  "tools": __TOOLS__,
+  "tools_generated": false,
+  "compatibility": {
+    "runtimes": { "node": ">=24.0.0" }
+  }
+}

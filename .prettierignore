@@ -1,0 +1,8 @@
+node_modules
+dist
+out
+pnpm-lock.yaml
+src/api/generated
+src/api/openapi.json
+test/__snapshots__
+manifest.template.json

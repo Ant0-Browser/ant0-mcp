@@ -1,0 +1,14 @@
+{
+  "source": "Windows MCP descriptor capture",
+  "os": "Windows x64",
+  "node": "24.19.0",
+  "libuv": "1.52.1",
+  "mode": 4096,
+  "isFIFO": false,
+  "isSocket": false,
+  "isFile": false,
+  "isCharacterDevice": false,
+  "isTTY": false,
+  "nativeGetFileType": 3,
+  "bytesTraversed": true
+}

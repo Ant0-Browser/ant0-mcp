@@ -1,0 +1,56 @@
+{
+  "name": "ant0-mcp",
+  "version": "0.3.22-beta.2",
+  "description": "MCP server for Ant0, a browser for automation and agents. Pre-release.",
+  "license": "BSD-3-Clause",
+  "type": "module",
+  "private": true,
+  "homepage": "https://ant0.link",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ant0-Browser/ant0-mcp.git"
+  },
+  "engines": {
+    "node": ">=24",
+    "pnpm": ">=10"
+  },
+  "packageManager": "pnpm@11.25.0",
+  "bin": {
+    "ant0-mcp": "./dist/bin.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "lint": "prettier --check .",
+    "format": "prettier --write .",
+    "clean": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\"",
+    "generate:api": "node scripts/generate-api.mjs",
+    "bundle": "node scripts/build-mcpb.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/server": "2.4.0",
+    "jose": "6.2.15",
+    "openapi-fetch": "0.17.0",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@anthropic-ai/mcpb": "2.1.2",
+    "@modelcontextprotocol/client": "2.4.0",
+    "@types/node": "^24.13.3",
+    "esbuild": "0.28.2",
+    "openapi-typescript": "^7.13.0",
+    "prettier": "^3.9.6",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.12"
+  }
+}
