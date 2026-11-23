@@ -29,6 +29,15 @@ ant0 mcp serve --stdio
 
 Add that command to your MCP client. See https://docs.ant0.link for client examples.
 
+### From npm
+
+```sh
+npm install --global @ant0/mcp
+ant0-mcp serve --stdio
+```
+
+This is the same server as the bundle below.
+
 ### The .mcpb bundle
 
 Download `ant0-<version>.mcpb` and `SHA256SUMS` from the Releases page, check the hash (and the signature, when the release carries one), and open the file in a client that supports MCP Bundles, such as Claude Desktop. Start the Ant0 app before using it.

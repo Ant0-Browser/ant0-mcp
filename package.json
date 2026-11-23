@@ -1,10 +1,10 @@
 {
-  "name": "ant0-mcp",
+  "name": "@ant0/mcp",
   "version": "0.3.22-beta.2",
   "description": "MCP server for Ant0, a browser for automation and agents. Pre-release.",
   "license": "BSD-3-Clause",
   "type": "module",
-  "private": true,
+  "private": false,
   "homepage": "https://ant0.link",
   "repository": {
     "type": "git",
@@ -22,11 +22,22 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
+    },
+    "./credentials": {
+      "types": "./dist/credential-file.d.ts",
+      "import": "./dist/credential-file.js"
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "!dist/**/*.map",
+    "LICENSE",
+    "README.md",
+    "THIRD_PARTY_NOTICES"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
@@ -35,7 +46,8 @@
     "format": "prettier --write .",
     "clean": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\"",
     "generate:api": "node scripts/generate-api.mjs",
-    "bundle": "node scripts/build-mcpb.mjs"
+    "bundle": "node scripts/build-mcpb.mjs",
+    "generate:notices": "node scripts/generate-notices.mjs"
   },
   "dependencies": {
     "@modelcontextprotocol/server": "2.4.0",
