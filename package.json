@@ -16,7 +16,7 @@
   },
   "packageManager": "pnpm@11.25.0",
   "bin": {
-    "ant0-mcp": "./dist/bin.js"
+    "ant0-mcp": "dist/bin.js"
   },
   "exports": {
     ".": {
